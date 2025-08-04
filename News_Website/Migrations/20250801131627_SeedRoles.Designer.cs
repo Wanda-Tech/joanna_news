@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace News_Website.Migrations
 {
     [DbContext(typeof(NewsWebsiteContext))]
-    [Migration("20250721132459_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250801131627_SeedRoles")]
+    partial class SeedRoles
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -84,7 +84,6 @@ namespace News_Website.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
@@ -113,6 +112,14 @@ namespace News_Website.Migrations
                     b.HasKey("RoleId");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = 1,
+                            Description = "Has full access to all resources.",
+                            Name = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("User", b =>

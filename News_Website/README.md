@@ -10,6 +10,9 @@ dotnet add package Microsoft.EntityFrameworkCore.SqlServer
 dotnet add package Microsoft.EntityFrameworkCore.Tools
 ```
 
+--AutoMapper
+``` dotnet add package automapper```
+
 
 ### To create new migration file
 -- Crete new migraiton file "initialMigrations_TIMESTAMP" with sql script
@@ -27,12 +30,12 @@ dotnet ef migrations list
 
 ## To add db context
 ```
-// MyAppDbContext.cs
+// NewsWebisteDbContext.cs
 using Microsoft.EntityFrameworkCore;
 
-public class MyAppDbContext : DbContext
+public class NewswebsiteContext : DbContext
 {
-    public MyAppDbContext(DbContextOptions<MyAppDbContext> options)
+    public NewsWebsiteContext(DbContextOptions<NewsWebsiteContext> options)
         : base(options)
     {
     }
@@ -46,7 +49,7 @@ public class MyAppDbContext : DbContext
 ### Make Edits in Program.cs
 ```
 // ✅ Add DbContext and SQL Server connection string
-builder.Services.AddDbContext<MyAppDbContext>(options =>
+builder.Services.AddDbContext<NewsWebsiteContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 ```
@@ -54,6 +57,6 @@ builder.Services.AddDbContext<MyAppDbContext>(options =>
 Set connectionStirng in appsettings.json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost;Database=MyAppDb;Trusted_Connection=True;TrustServerCertificate=True;"
+    "DefaultConnection": "Server=WandaTech;Database=NewsWebsite_Db;Trusted_Connection=True;TrustServerCertificate=True;"
   }
 }

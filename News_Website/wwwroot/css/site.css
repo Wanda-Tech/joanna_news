@@ -40,4 +40,8 @@ div.news-summary{
     margin:5vh 0;
     padding:3vh;
 }
+.news-image img{
+    width:100%;
+    height:50vh;
+}
 

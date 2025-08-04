@@ -10,11 +10,11 @@ builder.Services.AddDbContext<NewsWebsiteContext>(options =>
 
 
 var app = builder.Build();
-
+ 
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<NewsWebsiteContext>();
-    DbInitializer.Seed(context);
+    DbInitializer.Seed(context);           
 }
 
 app.UseStaticFiles();

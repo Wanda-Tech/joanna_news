@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace News_Website.Migrations
 {
     [DbContext(typeof(NewsWebsiteContext))]
-    [Migration("20250721133701_SeedRole")]
-    partial class SeedRole
+    [Migration("20250731170722_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -84,7 +84,6 @@ namespace News_Website.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
