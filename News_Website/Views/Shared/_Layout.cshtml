@@ -14,17 +14,17 @@
     <header>
         <nav class="navbar navbar-expand-lg shadow-sm navbar-light" style="z-index: 10;">
             <div class="container-fluid bg-light fw-bold text-primary">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">News_Website</a>
+                <a class="navbar-brand" asp-area="" asp-controller="News" asp-action="Index">News_Website</a>
                 
                 <div class="collapse navbar-collapse d-sm-inline-flex justify-content-around" id="navbarSupportedContent">
                     <ul class="navbar-nav me-mb-2 mb-lg-0 flex-grow-1 ms-auto">
+                        @* <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="News" asp-action="Index">Home</a>
+                        </li> *@
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="News" asp-action="Index">Trendy News</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Trendy News</a>
-                        </li>
-                        <li class="nav-item dropdown position-relative">
+                       @*  <li class="nav-item dropdown position-relative">
                             <a class="nav-link text-dark dropdown-toggle" asp-area="" asp-controller="Home" asp-action="Index">Categories</a>
                             <ul class="dropdown-menu shadow">
                                 <li>
@@ -40,11 +40,11 @@
                                     <a class="dropdown-item" href="#">Sport</a>
                                 </li>
                             </ul>
-                        </li>
+                        </li> *@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Articles</a>
                         </li>
-                        <li class="nav-item  dropdown position-relative">
+                        @* <li class="nav-item  dropdown position-relative">
                             <a class="nav-link text-dark  dropdown-toggle" asp-area="" asp-controller="Home" asp-action="Index">Us</a>
                             <ul class="dropdown-menu shadow">
                                 <li>
@@ -57,22 +57,21 @@
                                     <a class="dropdown-item" href="#">Privacy</a>
                                 </li>
                             </ul>
-                        </li>
-                        <li class="nav-item">
+                        </li> *@
+                       @*  <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">User</a>
-                        </li>
+                         </li> *@
                     </ul>
+                    <partial name="_LoginPartial" />
                     <!-- search form-->
-                    <form class="d-lg-flex d-none" role="search">
-                        <input class="form-control me-2 search-box" type="search" placeholder="Search" aria-label="Search" />
-                        <button class="btn" type="submit">
-                            <i class="fas fa-search"></i>
-                            </button>
-                    </form>
+                    <button class="btn" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
                     <!-- icon for small screen-->
                     <div class="d-lg-none">
                         <a href="#" class="nav-link"><i class="fas fa-search"></i></a>
                     </div>
+
                 </div>
             </div>
         </nav>
@@ -86,13 +85,13 @@
     <footer class="border-top footer text-muted bg-light text-black shadow-sm">
         <div class="container">
             <div class="row">
-                <div class="col-md-4 mb-3">
+                <div class="col-md-8 mb-3">
                     <h5>News_Website</h5>
                     <p>
                         Your trustest source of daily news, and stories from around the globe 
                     </p>
                 </div>
-                <div class="col-md-4 mb-3">
+               @*  <div class="col-md-4 mb-3">
                     <h6>Quick links</h6>
                     <ul class="list-unstyled">
                         <li> <a href="#" class="footer-link">Home</a></li>
@@ -100,7 +99,7 @@
                         <li> <a href="#" class="footer-link">About</a></li>
                         <li> <a href="#" class="footer-link">Contact</a></li>
                     </ul>
-                </div>
+                </div> *@
                 <div class="col-md-4 mb-3">
                     <h6>Follow Us</h6>
                     <a href="#" class="me-2 text-black"><i class="fab fa-facebook"></i></a>

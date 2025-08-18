@@ -13,6 +13,17 @@
         <h6 class="text-muted sub-title">By <b>@Model.News.User.Email</b></h6>
 
         <h6 class="text-muted sub-title">@Model.News.CreatedDateString</h6>
+        <div class="d-flex align-items-center gap-2 mb-4">
+
+            <!-- the like section -->
+            <span class="badge bg-secondary" id="likeCount">@Model.News.TotalLikes 
+              <i class=fas fa-heart text-danger me-1></i> 
+            </span> 
+
+                <button id="likebtn" onclick="incrementLikes()" data-news-id="@Model.News.NewsId" class="btn btn-sm btn-primary">
+                    <i class=fas fa-heart text-danger me-1></i> I likes this!
+                </button>
+        </div>
 
         <div class="news-image">
             <img src="@Model.News.ImageUrl" alt="@Model.News.Title" height="300">
@@ -41,3 +52,15 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+
+     <script>
+         let count = 0;
+         function incrementLikes(){
+             count++;
+             document.getElementById("likeCount").innerText = count + 'Likes';
+
+         }
+</script>
+}

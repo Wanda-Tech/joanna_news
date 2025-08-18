@@ -3,7 +3,6 @@
     public class NewsDetailResponse
     {
         public simpleNews News { get; set; }
-
          public List<simpleNews> ReadNextNews { get; set; }
     }
 }

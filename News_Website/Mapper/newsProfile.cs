@@ -1,15 +1,18 @@
 ﻿using AutoMapper;
+using News_Website.Extension;
+using News_Website.Models;
 
-namespace News_Website.Mapper
+namespace News_Website.Mapper { 
+public class NewsProfile : Profile
 {
-    public class newsProfile : Profile
+
+    public NewsProfile()
     {
-        public newsProfile()
-        {
+
             CreateMap<News, simpleNews>()
-                .ForMember(dest => dest.IsPublished, opt => opt.MapFrom(src => src.NewsStatus == NewsStatus.Published))
-                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.NewsCategory.Name))
-                .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CreatedDate.ToString("MMMM dd, yyyy")));
-        }
+            .ForMember(dest => dest.IsPublished, opt => opt.MapFrom(src => src.NewsStatus == NewsStatus.Published))
+            .ForMember(dest => dest.NewsCategory, opt => opt.MapFrom(src => src.NewsCategory.Name))
+            .ForMember(dest => dest.CreatedDateString, opt => opt.MapFrom(src => src.CreatedDate.ToLocalTime().ToString("MMMM dd, HH:mm:ss tt zz") + " " + src.CreatedDate.ToHumanAgoString()));
     }
-} 
+}
+}

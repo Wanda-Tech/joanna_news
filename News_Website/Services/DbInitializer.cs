@@ -1,14 +1,17 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using News_Website.Helpers;
+using System;
 using System.ComponentModel.DataAnnotations;
-using System.IO;
-using System.Linq;
-using System.Xml;
-using static System.Net.WebRequestMethods;
+
 
 public static class DbInitializer
 {
     public static void Seed(NewsWebsiteContext context)
-    { 
+    {
+      
+        // Ensure the database is created
+
         //seed NewsCategories
         if (!context.NewsCategories.Any())
         {
@@ -46,44 +49,58 @@ public static class DbInitializer
             );
             context.SaveChanges();
         }
-        // Seed user
+
         User? userAdmin = context.Users.FirstOrDefault(u => u.Email == "admin@news.com");
-        if (userAdmin == null)
+        // Seed user
+        if (!context.Users.Any())
         {
-            userAdmin = new User
+            userAdmin = new User 
             {
-                Phone = "1234567890",
+                Phone = "77787812",
                 Email = "admin@news.com",
-                Password = "admin@news.com",
-                UserRoles = new List<UserRole>()
+                UserRoles = new List<UserRole>(),
             };
+            string password = PasswordHasher.HashPassword(userAdmin.Email);
+
+            userAdmin.Password = password;
+
             var adminRole = context.Roles.FirstOrDefault(r => r.Name == "Admin");
-            if (adminRole != null)
+
+
+            userAdmin.UserRoles.Add(new UserRole
             {
-                userAdmin.UserRoles.Add(new UserRole
-                {
-                    Role = adminRole
-                });
-            }
+                Role = adminRole
+            });
             context.Users.Add(userAdmin);
-            context.SaveChanges(); // Save so UserId is generated
+
+            context.SaveChanges();
         }
 
-        
+
+
+
         //seed news
         if (!context.News.Any())
         {
             var allNewsCategories = context.NewsCategories
-                .Select(q => q.Id).ToList();
-            var images = new[]
-            {
-                "https://www.reuters.com/resizer/v2/DA25HNIGKBJGXODOJJY3HV4SA4.jpg?auth=81baedfd13e7c51c9b1a8db0d35e10d2b0852f3e5017d3c2d2881bb24d1605a8&width=240&quality=80",
-                "https://www.reuters.com/resizer/v2/U7HZ3YNZF5JYZLNAKBJI5C3VPA.jpg?auth=fb72b8482ddf551603788a8df1ec9776708eec9d416d44def0a509badcbcdb99&width=1200&quality=80",
-                "https://www.reuters.com/resizer/v2/FEOHDPJXUNMZNNM6J2XRCTOXXA.jpg?auth=c2dadfbc67e5a472e0235f737fe27e299e7b321867deeafd018791a045b54c94&width=1200&quality=80",
-                "https://www.reuters.com/resizer/v2/DPBY2SBFVBPLPEWH7VNBDEMGCY.jpg?auth=b0cd30a20c32ec79c6d649c48ddab565cb29c827f7648838369bfe75320da0da&width=1200&quality=80",
+               .Select(q => q.Id).ToList();
+            var images = new[] {
+            "https://www.reuters.com/resizer/v2/KALBIIWFZBNBVO3JFREMRRNUOM.jpg?auth=bdd8dbc1b6d1f5e97dc4befa011565e35423ffa58f35ce76fcd198d36c8c5c66&width=1200&quality=80",
+            "https://www.reuters.com/resizer/v2/UQC7RFFQYVNIFOKQTRCKFYZNVI.jpg?auth=4d10655282043c200d3771553d5c58f92105caeb3ac615fea36557be5c2767a8&width=1200&quality=80",
+            "https://www.reuters.com/resizer/v2/N7XHIIYNANIVLDUB53UV3FRIWM.jpg?auth=2297ef2e78c1e96344542adfa2380390d15b702bb66c95485b2c1f7d8dd0bd47&width=1200&quality=80",
+            "https://www.reuters.com/resizer/v2/CO2INK6Y5ZKSPMQFLHKKA3NXME.jpg?auth=9df15600a71bd9f7544157119fb85437f3e2ffd28b66cd22fd53b775e1364ef1&width=1200&quality=80",
+            "https://www.reuters.com/resizer/v2/HOGPC37FNNCKVPEAO5INJFPACY.jpg?auth=e328cb1533726343ed51ccdfbd0250cf71559afef8a8ee4f699c23a0e592bd02&width=1920&quality=80",
+            };
+
+            var titles = new[] {
+            "Big Alcohol prepares to fight back as buzzy cannabis drinks steal sales",
+            "'Japanese First' party emerges as election force with tough immigration talk",
+            "Green hydrogen retreat poses threat to emissions targets",
+            "Hyundai Motor warns of bigger hit from US tariffs after second-quarter profit fall",
+            "American Nazis: The Aryan Freedom Network is riding high in Trump era",
             };
             Random rnd = new Random();
-            for (int i = 0; i < 20; i++) {
+            for (int i = 0; i < 6; i++) {
                 context.News.Add(
                         new News
                         {
@@ -91,15 +108,15 @@ public static class DbInitializer
                             //NewsCategory = context.NewsCategories.FirstOrDefault(nc => nc.Name == "Articles"),
                             NewsCategoryId = allNewsCategories[rnd.Next() % allNewsCategories.Count],
                             User = userAdmin,
-                            CreatedDate = DateTime.UtcNow,
-                            Title = @"'Japanese first' party emerges as election force with tough immigration talk",
+                            Title = titles[rnd.Next() % titles.Length],
+                            ImageUrl = images[rnd.Next() % images.Length],
                             NewsStatus = NewsStatus.Draft,
+                            CreatedDate = DateTime.UtcNow,
                             Summary = @"<ul>
                             <li> Sanseito, birthed on YouTube, makes election gains </li>
                             <li> Party has also pledged tax cuts and welfare spending </li>
                             <li> Leader says he wants to expand lower house presence </li>
                             </ul>",
-                            ImageUrl = images[rnd.Next() % images.Length],
                             Content = @"
                             <p>
                                 TOKYO, July 21 (Reuters) - The fringe far-right Sanseito party emerged as one of the biggest winners in
@@ -150,8 +167,27 @@ public static class DbInitializer
 
                 );
             };                          
-            context.SaveChanges();          
+            context.SaveChanges();
         }
-    } 
+
+        //seed likes
+        // After seeding Users and News and calling context.SaveChanges()
+      
+if (!context.NewsLikes.Any())
+        {
+            var user = context.Users.FirstOrDefault();
+            var news = context.News.FirstOrDefault();
+            if (user != null && news != null)
+            {
+                context.NewsLikes.Add(new NewsLike
+                {
+                    Id = 1,
+                    NewsId = news.NewsId,
+                    CreatedDate = DateTime.UtcNow
+                });
+                context.SaveChanges();
+            }
+        }
+    }
     
 } 

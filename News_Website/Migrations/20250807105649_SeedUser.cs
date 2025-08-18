@@ -5,7 +5,7 @@
 namespace News_Website.Migrations
 {
     /// <inheritdoc />
-    public partial class SeedRoles : Migration
+    public partial class SeedUser : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace News_Website.Migrations
 {
     [DbContext(typeof(NewsWebsiteContext))]
-    [Migration("20250731173524_SeedNews")]
-    partial class SeedNews
+    [Migration("20250812085933_NewsLike")]
+    partial class NewsLike
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,6 +59,9 @@ namespace News_Website.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int>("TotalLikes")
+                        .HasColumnType("int");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -90,6 +93,43 @@ namespace News_Website.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("NewsCategories");
+                });
+
+            modelBuilder.Entity("NewsLike", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("IpAddress")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("NewsId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserAgent")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NewsId");
+
+                    b.ToTable("NewsLikes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedDate = new DateTime(2025, 8, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            NewsId = 1
+                        });
                 });
 
             modelBuilder.Entity("Role", b =>
@@ -187,6 +227,17 @@ namespace News_Website.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("NewsLike", b =>
+                {
+                    b.HasOne("News", "News")
+                        .WithMany("Likes")
+                        .HasForeignKey("NewsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("News");
+                });
+
             modelBuilder.Entity("UserRole", b =>
                 {
                     b.HasOne("Role", "Role")
@@ -204,6 +255,11 @@ namespace News_Website.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("News", b =>
+                {
+                    b.Navigation("Likes");
                 });
 
             modelBuilder.Entity("NewsCategory", b =>

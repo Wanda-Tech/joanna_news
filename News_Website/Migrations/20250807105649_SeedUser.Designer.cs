@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace News_Website.Migrations
 {
     [DbContext(typeof(NewsWebsiteContext))]
-    [Migration("20250801131627_SeedRoles")]
-    partial class SeedRoles
+    [Migration("20250807105649_SeedUser")]
+    partial class SeedUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

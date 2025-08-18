@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace News_Website.Migrations
 {
     [DbContext(typeof(NewsWebsiteContext))]
-    [Migration("20250731170722_InitialCreate")]
+    [Migration("20250807103321_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
