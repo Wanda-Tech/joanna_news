@@ -1,4 +1,5 @@
-﻿@model List<simpleNews>
+﻿@model News_Website.Models.PaginatedResponse<simpleNews>
+
 @{
     ViewData["Title"] = "News Index";
 }
@@ -7,7 +8,7 @@
 <h1 class="title">News Home</h1>
 <span>@DateTime.Now.ToString()</span>
 
-@foreach (var news in Model)
+@foreach (var News in Model.Response)
 {
-    <partial name="_NewsCard" model="news" />
+    <partial name="_NewsCard" model="News" />
 }

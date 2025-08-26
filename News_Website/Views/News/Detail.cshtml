@@ -8,7 +8,7 @@
     <div class="col-md-12 news-header">
         <a asp-action="Index" asp-controller="News">Back to list</a>
 
-        <h1 class="title">@Model.News.Title</h1>
+        <h1 class="title fw-bold">@Model.News.Title</h1>
 
         <h6 class="text-muted sub-title">By <b>@Model.News.User.Email</b></h6>
 
@@ -16,13 +16,15 @@
         <div class="d-flex align-items-center gap-2 mb-4">
 
             <!-- the like section -->
-            <span class="badge bg-secondary" id="likeCount">@Model.News.TotalLikes 
-              <i class=fas fa-heart text-danger me-1></i> 
-            </span> 
+            <span class="badge bg-secondary" id="like-count-@Model.News.NewsId">
+                @Model.News.TotalLikes
+                <i class="fas fa-heart text-danger me-1"></i>
+            </span>
 
-                <button id="likebtn" onclick="incrementLikes()" data-news-id="@Model.News.NewsId" class="btn btn-sm btn-primary">
-                    <i class=fas fa-heart text-danger me-1></i> I likes this!
-                </button>
+            <button onclick="likeNews('@Model.News.NewsId')"
+                    class="btn btn-sm btn-primary"> I like this!
+            </button>
+
         </div>
 
         <div class="news-image">
@@ -32,7 +34,7 @@
 
         <div class="news-summary">
             <h4>Summary</h4>
-            @Html.Raw(Model.News.Summary)
+            @Html.Raw(Model.News.Summary?.Replace("\\n\\r", "<br/>"))
         </div>
 
 
@@ -54,13 +56,17 @@
 </div>
 
 @section Scripts {
+    <script>
+        function likeNews(newsId) {
+            fetch('/News/Like/' + newsId, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('like-count-' + newsId).innerText = data.totalLikes;
+            })
+            .catch(err => console.error(err));
+        }
+    </script>
 
-     <script>
-         let count = 0;
-         function incrementLikes(){
-             count++;
-             document.getElementById("likeCount").innerText = count + 'Likes';
-
-         }
-</script>
 }

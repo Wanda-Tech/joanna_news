@@ -9,10 +9,6 @@
     <DockerfileContext>.</DockerfileContext>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Controllers\HomeController.cs" />
-  </ItemGroup>
-
 
 
 

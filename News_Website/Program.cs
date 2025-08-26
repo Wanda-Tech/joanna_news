@@ -36,6 +36,7 @@ var app = builder.Build();
 
 
 app.UseStaticFiles();
+app.MapFallbackToFile("index.html");
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthentication();
@@ -43,7 +44,8 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");//Home.Controller.Index is the default page
+
 
 // ✅ Run migrations and seed data
 using (var scope = app.Services.CreateScope())

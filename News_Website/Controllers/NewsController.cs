@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace News_Website.Controllers;
 
-// [Authorize(Roles = "Admin,Editor")]
+ [Authorize(Roles = $"{Constants.Roles.Admin},{Constants.Roles.Editor }")]
 
 public class NewsController : Controller
 {
@@ -20,9 +20,9 @@ public class NewsController : Controller
         _NewsService = NewsService;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(NewsSearchRequest request)
     {
-        List<simpleNews> newsList = await _NewsService.GetAllNewsAsync();
+        PaginatedResponse<simpleNews> newsList = await _NewsService.GetAllNewsAsync(request);
 
         return View(newsList);
     }
@@ -50,14 +50,18 @@ public class NewsController : Controller
     {
         if (int.TryParse(newsId, out int id))
         {
-            int newCounter = await _NewsService.UpdateLikesAsync(int.Parse(newsId));
+            int newCounter = await _NewsService.UpdateLikesAsync(id);
 
-            return Ok(new { totalLikes = newCounter });
+            if (newCounter >= 0)
+                return Ok(new { totalLikes = newCounter });
+
+            return NotFound("News not found.");
         }
 
-
-        return BadRequest("News ID cannot be null or empty.");
+        return BadRequest("Invalid News ID.");
     }
+
+
 
 
 }

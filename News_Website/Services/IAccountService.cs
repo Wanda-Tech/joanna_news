@@ -10,4 +10,6 @@ public interface IAccountService
     public Task<User> RegisterNewUser(SignUpRequest request);
 
     public Task SignOutAsync();
+    public Task<List<User>> GetRecentUsers(int limit = 10);
+    public int GetCurrentUserId();
 }

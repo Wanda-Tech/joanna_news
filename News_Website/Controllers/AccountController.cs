@@ -30,7 +30,12 @@ namespace News_Website.Controllers;
                 {
                     User user = await _accountService.AuthenticateAsync(request);
 
-                    return RedirectToAction("Index", "Home");
+                if (user.UserRoles.Any(q => q.Role.Name == (Constants.Roles.Admin)))
+                {
+                    return RedirectToAction("Index", "Admin");
+                }
+
+                return RedirectToAction("Index", "Home");
                 }
                 catch (System.Exception ex)
                 {
@@ -65,7 +70,8 @@ namespace News_Website.Controllers;
                 /// business logic
                 try
                 {
-                    User user = await _accountService.RegisterNewUser(request); return RedirectToAction(nameof(SignIn));
+                    User user = await _accountService.RegisterNewUser(request); 
+                    return RedirectToAction(nameof(SignIn));
                 }
                 catch (System.Exception ex)
                 {
